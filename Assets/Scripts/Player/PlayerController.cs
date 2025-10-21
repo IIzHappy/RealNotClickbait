@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
 
             if (interactable != null)
             {
-                if (_curInteractable._canInteract)
+                if (interactable._canInteract)
                 {
                     _curInteractable = interactable;
                     _crosshair.sprite = _interactCrosshair;
