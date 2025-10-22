@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     float _cameraPitch;
     float _playerYaw;
 
+    public bool _canControl = true;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -43,13 +45,19 @@ public class PlayerController : MonoBehaviour
 
     void LateUpdate()
     {
-        CameraRotation();
+        if (_canControl)
+        {
+            CameraRotation();
+        }
     }
 
     void Update()
     {
-        Move();
-        InteractableCheck();
+        if (_canControl)
+        {
+            Move();
+            InteractableCheck();
+        }
     }
 
     private void InteractableCheck()

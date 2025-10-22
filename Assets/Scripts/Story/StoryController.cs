@@ -70,10 +70,9 @@ public class StoryController : MonoBehaviour
         //dumbass ending
     }
 
-    public void FindScroll()
+    public void FindBook()
     {
-        //unlock desk drawer wwith journal
-        _deskDrawer._canInteract = true;
+        //unlock cabinet drawer with journal
     }
     public void FindJournal()
     {
