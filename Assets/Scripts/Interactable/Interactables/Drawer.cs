@@ -7,6 +7,6 @@ public class Drawer : Interactable
     {
         animator = GetComponent<Animator>();
         animator.SetTrigger("Open");
-        this.enabled = false;
+        _canInteract = false;
     }
 }

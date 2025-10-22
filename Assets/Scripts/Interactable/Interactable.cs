@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
-    [SerializeField] Item _item;
+    public Item _item;
     public bool _isItem;
     public List<Item> _requirements;
     public bool _canInteract = true;
@@ -18,12 +18,6 @@ public abstract class Interactable : MonoBehaviour
 
     public bool Interact()
     {
-        if (_isItem)
-        {
-            Inventory.Instance.AddItem(_item);
-            Destroy(gameObject);
-            return true;
-        }
 
         if (_requirements.Count == 0)
         {
