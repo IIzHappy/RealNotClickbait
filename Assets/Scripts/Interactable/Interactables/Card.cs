@@ -9,6 +9,7 @@ public class Card : Interactable
     }
     public override void Interacted()
     {
+        Inventory.Instance.AddCard();
         item = gameObject.GetComponent<Interactable>()._item;
         StoryController.Instance.Card();
         Inventory.Instance.AddItem(item);

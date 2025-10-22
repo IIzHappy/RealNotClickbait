@@ -9,6 +9,7 @@ public class Cipher2 : Interactable
     }
     public override void Interacted()
     {
+        Inventory.Instance.AddCipher2();
         item = gameObject.GetComponent<Interactable>()._item;
         StoryController.Instance.Cipher2();
         Inventory.Instance.AddItem(item);

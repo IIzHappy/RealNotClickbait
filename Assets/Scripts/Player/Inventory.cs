@@ -8,8 +8,11 @@ public class Inventory : MonoBehaviour
     public List<Item> items = new List<Item>();
 
     public GameObject _inventory;
-    public GameObject _clues;
-    public GameObject _keys;
+
+    public GameObject _cipher11;
+    public GameObject _cipher12;
+    public GameObject _cipher2;
+    public GameObject _card;
 
     private void Awake()
     {
@@ -33,9 +36,18 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void UpdateDisplay()
+    public void AddCipher1()
     {
-
+        _cipher11.SetActive(true);
+        _cipher12.SetActive(true);
+    }
+    public void AddCipher2()
+    {
+        _cipher2.SetActive(true);
+    }
+    public void AddCard()
+    {
+        _card.SetActive(true);
     }
 
     public void AddItem(Item item)
