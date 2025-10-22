@@ -1,9 +1,19 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class StoryController : MonoBehaviour
 {
     public static StoryController Instance { get; private set; }
+
+    public PlayerController _player;
+    public GameObject _endCamera;
+    public Animator _animator;
+
+    public GameObject _gameEnd;
+    public GameObject _windowEnd;
+    public GameObject _doorEnd;
+    public GameObject _summonEnd;
+    public GameObject _window;
 
     public GameObject _door;
     public Interactable _shelfCabinet;
@@ -14,6 +24,20 @@ public class StoryController : MonoBehaviour
     public Interactable _keyWindow;
     public Interactable _deskDrawer;
     public Interactable _cabinetDrawer;
+
+    public AudioSource _audioSource;
+    public AudioClip _locked;
+    public AudioClip _openDrawer;
+    public AudioClip _cipher1Solve;
+    public AudioClip _cipher2Solve;
+    public AudioClip FindDoorKey;
+    public AudioClip _card;
+    public AudioClip FindWindowKey;
+    public AudioClip _riddle1;
+    public AudioClip _riddle2;
+    public AudioClip _endDoor;
+    public AudioClip _endWindow;
+    public AudioClip _endSummon;
 
     private void Awake()
     {
@@ -33,13 +57,14 @@ public class StoryController : MonoBehaviour
     }
     public void Cipher1()
     {
-        //play player voiceline
-        //make shelf interabctale
+        _audioSource.clip = _cipher1Solve;
+        _audioSource.Play();
         _shelfCabinet._canInteract = true;
     }
     public void Cipher2()
     {
-        //make rug interactable
+        _audioSource.clip = _cipher2Solve;
+        _audioSource.Play();
         _rug.GetComponent<Interactable>()._canInteract = true;
     }
     public void RugUp()
@@ -47,46 +72,93 @@ public class StoryController : MonoBehaviour
         //change rug
         _rug.SetActive(false);
         _rugFlipped.SetActive(true);
-        //add key
+        _audioSource.clip = FindDoorKey;
+        _audioSource.Play();
         _keyDoor.gameObject.SetActive(true);
     }
     public void DoorUnlock()
     {
-        //good ending
+        _player.gameObject.SetActive(false);
+        _endCamera.SetActive(true);
+        _animator.SetTrigger("Door");
+        _audioSource.clip = _endDoor;
+        _audioSource.Play();
+        StartCoroutine(DoorOpen(0.1f));
+        StartCoroutine(DoorEnd(1.7f));
+    }
+    IEnumerator DoorOpen(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        _door.GetComponent<Animator>().SetTrigger("Open");
+    }
+    IEnumerator DoorEnd(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        _gameEnd.gameObject.SetActive(true);
+        _doorEnd.gameObject.SetActive(true);
     }
 
     public void Card()
     {
-        //card pickup
-        //box already there
+        _audioSource.clip = _card;
+        _audioSource.Play();
     }
     public void BoxUnlock()
     {
-        //has window key
+        _audioSource.clip = FindWindowKey;
+        _audioSource.Play();
     }
 
     public void WindowUnlock()
     {
-        //dumbass ending
+        _player.gameObject.SetActive(false);
+        _endCamera.SetActive(true);
+        _animator.SetTrigger("Window");
+        _audioSource.clip = _endWindow;
+        _audioSource.Play();
+        StartCoroutine(WindowOpen(0.2f));
+        StartCoroutine(WindowEnd(1.5f));
+    }
+    IEnumerator WindowOpen(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        _window.GetComponent<Animator>().SetTrigger("Open");
+    }
+    IEnumerator WindowEnd(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        _gameEnd.gameObject.SetActive(true);
+        _windowEnd.gameObject.SetActive(true);
     }
 
     public void FindBook()
     {
-        //unlock cabinet drawer with journal
+        _audioSource.clip = _riddle1;
+        _audioSource.Play();
     }
     public void FindJournal()
     {
-        //Bottom drawer unlocks that has book to summon
+        _audioSource.clip = _riddle2;
+        _audioSource.Play();
         _cabinetDrawer._canInteract = true;
     }
 
     public void SummonAlchemist()
     {
-        //too ezed ending
+        _gameEnd.gameObject.SetActive(true);
+        _summonEnd.gameObject.SetActive(true);
+        _audioSource.clip = _endSummon;
+        _audioSource.Play();
     }
 
     public void LockedSound()
     {
-        //need locked sound
+        _audioSource.clip = _locked;
+        _audioSource.Play();
+    }
+    public void OpenSound()
+    {
+        _audioSource.clip = _openDrawer;
+        _audioSource.Play();
     }
 }
