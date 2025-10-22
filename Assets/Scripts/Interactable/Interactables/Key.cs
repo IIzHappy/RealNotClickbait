@@ -6,5 +6,7 @@ public class Key : Interactable
     public override void Interacted()
     {
         item = gameObject.GetComponent<Item>();
+        Inventory.Instance.AddItem(item);
+        gameObject.SetActive(false);
     }
 }
