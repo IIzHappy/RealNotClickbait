@@ -12,7 +12,6 @@ public class StoryController : MonoBehaviour
     public GameObject _keyDoor;
     public Interactable _box;
     public Interactable _keyWindow;
-    public Interactable _doorWindow;
     public Interactable _deskDrawer;
     public Interactable _cabinetDrawer;
 
@@ -30,6 +29,7 @@ public class StoryController : MonoBehaviour
     {
         //door closes and player is stuck
         _door.GetComponent<Interactable>()._canInteract = true;
+        Debug.Log("Game started");
     }
     public void Cipher1()
     {
@@ -84,5 +84,10 @@ public class StoryController : MonoBehaviour
     public void SummonAlchemist()
     {
         //too ezed ending
+    }
+
+    public void LockedSound()
+    {
+        //need locked sound
     }
 }

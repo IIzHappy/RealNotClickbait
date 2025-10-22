@@ -4,6 +4,6 @@ public class Window : Interactable
 {
     public override void Interacted()
     {
-        //dead ending
+        StoryController.Instance.WindowUnlock();
     }
 }

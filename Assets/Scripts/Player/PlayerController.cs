@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public Vector2 look;
 
     [Header("Player")]
-    public float MoveSpeed = 4.0f;
+    public float MoveSpeed = 10.0f;
     public float AccelRate = 10.0f;
     private float _speed;
 
@@ -29,12 +29,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _bottomClamp = -90f;
     [SerializeField] float _cameraSens = 1;
     float _cameraPitch;
-    float _rotationVelocity;
+    float _playerYaw;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
+        _cameraPitch = 0f;
+        _playerCam.transform.localRotation = Quaternion.identity;
+
+        StoryController.Instance.StartGame();
     }
 
     void LateUpdate()
@@ -104,12 +108,12 @@ public class PlayerController : MonoBehaviour
     private void CameraRotation()
     {
         _cameraPitch += look.y * -_cameraSens;
-        _rotationVelocity = look.x * _cameraSens;
+        _playerYaw += look.x * _cameraSens;
 
         _cameraPitch = Mathf.Clamp(_cameraPitch, _bottomClamp, _topClamp);
 
-        _playerCam.transform.localRotation = Quaternion.Euler(_cameraPitch, 0.0f, 0.0f);
-        transform.Rotate(Vector3.up * _rotationVelocity);
+        _playerCam.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
+        transform.rotation = Quaternion.Euler(0f, _playerYaw, 0f);
     }
     public Vector3 GetLookDir()
     {
@@ -126,11 +130,21 @@ public class PlayerController : MonoBehaviour
     }
     public void OnLook(InputValue value)
     {
-        look = value.Get<Vector2>();
+        Vector2 input = value.Get<Vector2>();
+
+        if (input.sqrMagnitude < 0.001f)
+            input = Vector2.zero;
+
+        look = input;
     }
 
     public void OnInteract(InputValue value)
     {
         TryInteract();
+    }
+
+    public void OnInventory(InputValue value)
+    {
+        Inventory.Instance.OpenInv(value.isPressed);
     }
 }

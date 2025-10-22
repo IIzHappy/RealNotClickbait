@@ -7,6 +7,10 @@ public class Inventory : MonoBehaviour
 
     public List<Item> items = new List<Item>();
 
+    public GameObject _inventory;
+    public GameObject _clues;
+    public GameObject _keys;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -15,6 +19,23 @@ public class Inventory : MonoBehaviour
             return;
         }
         Instance = this;
+    }
+
+    public void OpenInv(bool open)
+    {
+        if (!_inventory.activeSelf)
+        {
+            _inventory.SetActive(true);
+        }
+        else
+        {
+            _inventory.SetActive(false);
+        }
+    }
+
+    public void UpdateDisplay()
+    {
+
     }
 
     public void AddItem(Item item)

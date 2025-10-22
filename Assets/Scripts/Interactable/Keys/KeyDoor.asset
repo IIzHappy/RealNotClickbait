@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemName: 
   _icon: {fileID: 0}
+  _isKey: 1
