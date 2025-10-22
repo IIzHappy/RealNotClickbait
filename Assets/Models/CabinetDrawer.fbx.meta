@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< Updated upstream
 guid: 34f0ba561bb60c24886f2a184db5ede4
-=======
-guid: 114fe06a2ab69784f80f35e5cd9f3e67
->>>>>>> Stashed changes
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -20,11 +16,8 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-<<<<<<< Updated upstream
     rigImportErrors: 
     rigImportWarnings: 
-=======
->>>>>>> Stashed changes
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
