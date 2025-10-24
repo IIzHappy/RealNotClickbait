@@ -7,12 +7,14 @@ Shader "Custom/BumpMap"
         _SpecColor("Specular", Color) = (1,1,1,1)
         _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
         _MainTex("Base Texture", 2D) = "white" {}
+        _RampTex ("Ramp Texture", 2D) = "white" {}
         _myBump ("Bump Texture", 2D) = "bump" {}
         _mySlider ("Bump Amount", Range(0,10)) = 1
 
         [Toggle]_UseDiffuse("Use Diffuse", Float) = 1
         [Toggle]_UseAmbient("Use Ambient", Float) = 1
         [Toggle]_UseSpecular("Use Specular", Float) = 1
+        [Toggle]_UseToon("Use Specular", Float) = 1
     }
 
     SubShader
@@ -49,6 +51,8 @@ Shader "Custom/BumpMap"
             SAMPLER(sampler_MetallicTex);
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
+            TEXTURE2D(_RampTex);
+            SAMPLER(sampler_RampTex);
             TEXTURE2D(_myBump);
             SAMPLER(sampler_myBump);
 
@@ -59,6 +63,7 @@ Shader "Custom/BumpMap"
                 float _UseDiffuse;
                 float _UseAmbient;
                 float _UseSpecular;
+                float _UseToon;
                 float _mySlider;
             CBUFFER_END
 
@@ -88,22 +93,30 @@ Shader "Custom/BumpMap"
 
                 Light mainLight = GetMainLight();
                 half3 lightDir = normalize(mainLight.direction);
-
+                //half3 normalWS = normalize(IN.normalWS);
+                half3 lightColor = mainLight.color;
+                
                 half NdotL = saturate(dot(normalWS, lightDir));
+                half rampValue = SAMPLE_TEXTURE2D(_RampTex, sampler_RampTex, float2(NdotL, 0)).r;
 
                 half3 finalColor = 0;
 
+                //Toon
+                if (_UseToon > 0.5)
+                {
+                    finalColor = _Color.rgb * lightColor * rampValue * 0.5;
+                }
                 //Ambient
                 if (_UseAmbient > 0.5)
                 {
                     half3 ambientSH = SampleSH(normalWS);
-                    finalColor += ambientSH * texColor.rgb;
+                    finalColor += ambientSH * texColor.rgb * 0.5;
                 }
 
                 //Diffuse
                 if (_UseDiffuse > 0.5)
                 {
-                    half3 diffuse = texColor.rgb * NdotL;
+                    half3 diffuse = texColor.rgb * NdotL * 0.5;
                     finalColor += diffuse;
                 }
 
@@ -114,7 +127,7 @@ Shader "Custom/BumpMap"
                     half3 halfDir = normalize(lightDir + viewDir);
                     half NdotH = saturate(dot(normalWS, halfDir));
 
-                    half3 specular = _SpecColor.rgb * pow(NdotH, smoothness * 128.0);
+                    half3 specular = _SpecColor.rgb * pow(NdotH, smoothness * 128.0) * 0.5;
                     finalColor += specular * metallicTex;
                 }
 

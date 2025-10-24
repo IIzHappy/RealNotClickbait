@@ -85,19 +85,19 @@ Shader "Custom/Illumination"
                 //Toon
                 if (_UseToon > 0.5)
                 {
-                    finalColor = _Color.rgb * lightColor * rampValue;
+                    finalColor = _Color.rgb * lightColor * rampValue * 0.5;
                 }
                 //Ambient
                 if (_UseAmbient > 0.5)
                 {
                     half3 ambientSH = SampleSH(normalWS);
-                    finalColor += ambientSH * texColor.rgb;
+                    finalColor += ambientSH * texColor.rgb * 0.5;
                 }
 
                 //Diffuse
                 if (_UseDiffuse > 0.5)
                 {
-                    half3 diffuse = texColor.rgb * NdotL;
+                    half3 diffuse = texColor.rgb * NdotL * 0.5;
                     finalColor += diffuse;
                 }
 
@@ -108,11 +108,11 @@ Shader "Custom/Illumination"
                     half3 halfDir = normalize(lightDir + viewDir);
                     half NdotH = saturate(dot(normalWS, halfDir));
 
-                    half3 specular = _SpecColor.rgb * pow(NdotH, smoothness * 128.0);
+                    half3 specular = _SpecColor.rgb * pow(NdotH, smoothness * 128.0) * 0.5;
                     finalColor += specular * metallicTex;
                 }
 
-                return half4(finalColor, 1);
+                return half4(saturate(finalColor), 1);
             }
             ENDHLSL
         }

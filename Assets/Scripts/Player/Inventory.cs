@@ -14,6 +14,8 @@ public class Inventory : MonoBehaviour
     public GameObject _cipher2;
     public GameObject _card;
 
+    public PlayerController _player;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -29,10 +31,14 @@ public class Inventory : MonoBehaviour
         if (!_inventory.activeSelf)
         {
             _inventory.SetActive(true);
+            _player._canControl = false;
+            Cursor.lockState = CursorLockMode.None;
         }
         else
         {
             _inventory.SetActive(false);
+            _player._canControl = true;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 

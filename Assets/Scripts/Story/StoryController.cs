@@ -24,6 +24,7 @@ public class StoryController : MonoBehaviour
     public Interactable _keyWindow;
     public Interactable _deskDrawer;
     public Interactable _cabinetDrawer;
+    public Interactable _cabinetDrawer2;
 
     public AudioSource _audioSource;
     public AudioClip _locked;
@@ -135,6 +136,7 @@ public class StoryController : MonoBehaviour
     {
         _audioSource.clip = _riddle1;
         _audioSource.Play();
+        _cabinetDrawer2._canInteract = true;
     }
     public void FindJournal()
     {
